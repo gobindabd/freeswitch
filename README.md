@@ -76,6 +76,35 @@ sudo ldconfig -p | grep signalwire
 
 ---
 
+### Download OpenSSL 1.1.1 source:
+```sh
+wget https://www.openssl.org/source/openssl-1.1.1.tar.gz
+tar -xvzf openssl-1.1.1.tar.gz
+cd openssl-1.1.1
+```
+### Compile and install:
+
+```sh
+./config --prefix=/usr/local/openssl-1.1.1 --openssldir=/usr/local/openssl-1.1.1
+make -j$(nproc)
+sudo make install
+```
+### Set environment variables:
+
+```sh
+export PATH="/usr/local/openssl-1.1.1/bin:$PATH"
+export LD_LIBRARY_PATH="/usr/local/openssl-1.1.1/lib"
+export CFLAGS="-I/usr/local/openssl-1.1.1/include"
+export LDFLAGS="-L/usr/local/openssl-1.1.1/lib"
+```
+### Recompile FreeSWITCH:
+
+```sh
+make clean
+./configure --with-openssl=/usr/local/openssl-1.1.1
+make -j$(nproc)
+```
+
 ## **Installing FreeSWITCH**
 
 ```sh
